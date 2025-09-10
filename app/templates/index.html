@@ -3,20 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gerenciamento de Usuários</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        label { display: block; margin-bottom: 5px; }
+        
+        /* Estilo para os campos de criação */
+        .create-form input[type="text"], .create-form input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button[type="submit"]:hover { background-color: #45a049; }
+        
+        ul { list-style-type: none; padding: 0; }
+
+        /* Estilo para cada item da lista de usuários */
+        li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Container para os formulários de edição e remoção */
+        .user-actions {
+            display: flex;
+            gap: 5px; /* Espaço entre os botões */
+        }
+
+        /* Estilo para os formulários dentro dos <li> */
+        li form { margin: 0; padding: 0; border: none; }
+        
+        /* Estilo para os campos de edição */
+        .edit-form input[type="text"], .edit-form input[type="email"] {
+            /* Removendo a largura total para que o campo se ajuste ao conteúdo */
+            width: auto;
+            min-width: 150px; /* Um tamanho mínimo para o campo */
+            padding: 5px;
+            margin-right: 5px; /* Espaço entre os campos */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        /* Estilo para os botões de edição e remoção */
+        .edit-form button[type="submit"] {
+            background-color: #008CBA;
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+        .edit-form button[type="submit"]:hover { background-color: #007bb5; }
+
+        .remove-form button[type="submit"] {
+            background-color: #f44336;
+            padding: 5px 10px;
+            font-size: 0.8em;
+        }
+        .remove-form button[type="submit"]:hover { background-color: #da190b; }
+    </style>
 </head>
 <body>
-    <h1> Criar Usuarios</h1>
-    <form action="{{url_for('hello.novoUsuario')}}" method="POST">
-        <input type="text" name="nome_usuario" required>
-        <button type="submit">Novo Usuário</button>
+    <h1>Criar Usuários</h1>
+    <form class="create-form" action="{{url_for('hello.novoUsuario')}}" method="POST">
+        <label for="nome">Nome Usuário</label>
+        <input type="text" id="nome" name="nome_usuario" required>
+        <br>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email_usuario" required>
+        <br>
+        <button type="submit">Cadastrar Usuário</button>
     </form>
     
     <h1>Usuários</h1>
     <ul>
         {% for usuario in usuarios %}
-            <li>{{ usuario.username }}</li>
-        {% endfor %}    
+            <li>
+                <div class="user-actions">
+                    <form class="edit-form" action="{{url_for('hello.editarUsuario', usuario_id=usuario.id)}}" enctype="multipart/form-data" method="POST">
+                        <input type="text" id="nome" name="nome_usuario" value="{{ usuario.username }}" required>
+                        <input type="email" id="email" name="email_usuario" value="{{ usuario.email }}" required>
+                        <button type="submit">Atualizar</button>
+                    </form>
+                    <form class="remove-form" action="{{url_for('hello.removerUsuario', usuario_id=usuario.id)}}" method="POST">
+                        <button type="submit">Remover</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
     </ul>
 </body>
 </html>
