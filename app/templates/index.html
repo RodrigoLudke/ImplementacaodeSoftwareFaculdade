@@ -97,13 +97,40 @@
     <ul>
         {% for usuario in usuarios %}
             <li>
-                <div class="user-actions">
+                <div class="item-actions">
                     <form class="edit-form" action="{{url_for('hello.editarUsuario', usuario_id=usuario.id)}}" enctype="multipart/form-data" method="POST">
                         <input type="text" id="nome" name="nome_usuario" value="{{ usuario.username }}" required>
                         <input type="email" id="email" name="email_usuario" value="{{ usuario.email }}" required>
                         <button type="submit">Atualizar</button>
                     </form>
                     <form class="remove-form" action="{{url_for('hello.removerUsuario', usuario_id=usuario.id)}}" method="POST">
+                        <button type="submit">Remover</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h1>Adicionar Tarefas</h1>
+    <form class="create-form" action="{{url_for('hello.novaTarefa')}}" method="POST">
+        <label for="descricao">Descrição da Tarefa</label>
+        <input type="text" id="descricao" name="descricao_tarefa" required>
+        <br>
+        <button type="submit">Cadastrar Tarefa</button>
+    </form>
+    
+    <h1>Tarefas</h1>
+    <ul>
+        {% for tarefa in tarefas %}
+            <li>
+                <div class="item-actions">
+                    <form class="edit-form" action="{{url_for('hello.editarTarefa', tarefa_id=tarefa.id)}}" method="POST">
+                        <input type="text" id="descricao" name="descricao_tarefa" value="{{ tarefa.descricao }}" required>
+                        <button type="submit">Atualizar</button>
+                    </form>
+                    <form class="remove-form" action="{{url_for('hello.removerTarefa', tarefa_id=tarefa.id)}}" method="POST">
                         <button type="submit">Remover</button>
                     </form>
                 </div>
