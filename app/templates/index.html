@@ -1,141 +1,295 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Usuários</title>
+    <title>Sistema de Gerenciamento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
-        label { display: block; margin-bottom: 5px; }
-        
-        /* Estilo para os campos de criação */
-        .create-form input[type="text"], .create-form input[type="email"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+        :root {
+            --primary-purple: #8A2BE2;
+            --light-purple: #9370DB;
+            --remove-color: #f44336;
+            --dark-text: #333;
+            --light-text: #666;
+            --background-body: #f5f5f5;
+            --background-card: #fff;
+            --border-color: #e0e0e0;
         }
 
-        button[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        button[type="submit"]:hover { background-color: #45a049; }
-        
-        ul { list-style-type: none; padding: 0; }
-
-        /* Estilo para cada item da lista de usuários */
-        li {
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin-bottom: 5px;
-            border: 1px solid #eee;
-            border-radius: 4px;
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-body);
+            margin: 0;
+            padding: 40px 20px;
+            color: var(--dark-text);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
         }
 
-        /* Container para os formulários de edição e remoção */
-        .user-actions {
-            display: flex;
-            gap: 5px; /* Espaço entre os botões */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        /* Estilo para os formulários dentro dos <li> */
-        li form { margin: 0; padding: 0; border: none; }
-        
-        /* Estilo para os campos de edição */
-        .edit-form input[type="text"], .edit-form input[type="email"] {
-            /* Removendo a largura total para que o campo se ajuste ao conteúdo */
-            width: auto;
-            min-width: 150px; /* Um tamanho mínimo para o campo */
-            padding: 5px;
-            margin-right: 5px; /* Espaço entre os campos */
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-purple);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: var(--light-text);
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--background-card);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card-title h2 {
+            font-size: 1.25rem;
+            color: var(--dark-text);
+            margin: 0;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light-text);
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: calc(100% - 22px);
+            padding: 11px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
             box-sizing: border-box;
+            transition: border-color 0.3s;
         }
-        
-        /* Estilo para os botões de edição e remoção */
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 5px rgba(138, 43, 226, 0.4);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--primary-purple);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: var(--light-purple);
+            transform: translateY(-2px);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background-color: var(--background-card);
+            padding: 20px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+        }
+
+        li:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        li button[type="submit"] {
+            width: auto;
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+
         .edit-form button[type="submit"] {
-            background-color: #008CBA;
-            padding: 5px 10px;
-            font-size: 0.8em;
+            background-color: var(--light-purple);
         }
-        .edit-form button[type="submit"]:hover { background-color: #007bb5; }
+
+        .edit-form button[type="submit"]:hover {
+            background-color: #7D51B0;
+        }
 
         .remove-form button[type="submit"] {
-            background-color: #f44336;
-            padding: 5px 10px;
-            font-size: 0.8em;
+            background-color: var(--remove-color);
         }
-        .remove-form button[type="submit"]:hover { background-color: #da190b; }
+
+        .remove-form button[type="submit"]:hover {
+            background-color: #da190b;
+        }
+
+        hr { display: none; }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .column {
+                min-width: unset;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Criar Usuários</h1>
-    <form class="create-form" action="{{url_for('hello.novoUsuario')}}" method="POST">
-        <label for="nome">Nome Usuário</label>
-        <input type="text" id="nome" name="nome_usuario" required>
-        <br>
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email_usuario" required>
-        <br>
-        <button type="submit">Cadastrar Usuário</button>
-    </form>
-    
-    <h1>Usuários</h1>
-    <ul>
-        {% for usuario in usuarios %}
-            <li>
-                <div class="item-actions">
-                    <form class="edit-form" action="{{url_for('hello.editarUsuario', usuario_id=usuario.id)}}" enctype="multipart/form-data" method="POST">
-                        <input type="text" id="nome" name="nome_usuario" value="{{ usuario.username }}" required>
-                        <input type="email" id="email" name="email_usuario" value="{{ usuario.email }}" required>
-                        <button type="submit">Atualizar</button>
-                    </form>
-                    <form class="remove-form" action="{{url_for('hello.removerUsuario', usuario_id=usuario.id)}}" method="POST">
-                        <button type="submit">Remover</button>
-                    </form>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="header">
+        <h1>Sistema de Gerenciamento</h1>
+        <p>Gerencie usuários e tarefas de forma simples e elegante</p>
+    </div>
 
-    <hr>
-
-    <h1>Adicionar Tarefas</h1>
-    <form class="create-form" action="{{url_for('hello.novaTarefa')}}" method="POST">
-        <label for="descricao">Descrição da Tarefa</label>
-        <input type="text" id="descricao" name="descricao_tarefa" required>
-        <br>
-        <button type="submit">Cadastrar Tarefa</button>
-    </form>
-    
-    <h1>Tarefas</h1>
-    <ul>
-        {% for tarefa in tarefas %}
-            <li>
-                <div class="item-actions">
-                    <form class="edit-form" action="{{url_for('hello.editarTarefa', tarefa_id=tarefa.id)}}" method="POST">
-                        <input type="text" id="descricao" name="descricao_tarefa" value="{{ tarefa.descricao }}" required>
-                        <button type="submit">Atualizar</button>
-                    </form>
-                    <form class="remove-form" action="{{url_for('hello.removerTarefa', tarefa_id=tarefa.id)}}" method="POST">
-                        <button type="submit">Remover</button>
-                    </form>
+    <div class="main-container">
+        <div class="column">
+            <div class="card">
+                <div class="card-title">
+                    <h2>Criar Usuários</h2>
                 </div>
-            </li>
-        {% endfor %}
-    </ul>
+                <form class="create-form" action="{{url_for('hello.novoUsuario')}}" method="POST">
+                    <div class="input-group">
+                        <label for="nome">Nome Usuário</label>
+                        <input type="text" id="nome" name="nome_usuario" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email_usuario" required>
+                    </div>
+                    <button type="submit">Cadastrar Usuário</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <h2>Usuários</h2>
+                </div>
+                <ul>
+                    {% for usuario in usuarios %}
+                        <li>
+                            <form class="edit-form" action="{{url_for('hello.editarUsuario', usuario_id=usuario.id)}}" method="POST">
+                                <div class="input-group">
+                                    <label for="nome">Nome Usuário</label>
+                                    <input type="text" name="nome_usuario" value="{{ usuario.username }}" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email_usuario" value="{{ usuario.email }}" required>
+                                </div>
+                                <div class="item-actions">
+                                    <button type="submit">Atualizar</button>
+                                </div>
+                            </form>
+                            <form class="remove-form" action="{{url_for('hello.removerUsuario', usuario_id=usuario.id)}}" method="POST">
+                                <button type="submit">Remover</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <div class="card-title">
+                    <h2>Adicionar Tarefas</h2>
+                </div>
+                <form class="create-form" action="{{url_for('hello.novaTarefa')}}" method="POST">
+                    <div class="input-group">
+                        <label for="descricao">Descrição da Tarefa</label>
+                        <input type="text" id="descricao" name="descricao_tarefa" required>
+                    </div>
+                    <button type="submit">Cadastrar Tarefa</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <h2>Tarefas</h2>
+                </div>
+                <ul>
+                    {% for tarefa in tarefas %}
+                        <li>
+                            <form class="edit-form" action="{{url_for('hello.editarTarefa', tarefa_id=tarefa.id)}}" method="POST">
+                                <div class="input-group">
+                                    <label for="descricao">Descrição da Tarefa</label>
+                                    <input type="text" name="descricao_tarefa" value="{{ tarefa.descricao }}" required>
+                                </div>
+                                <div class="item-actions">
+                                    <button type="submit">Atualizar</button>
+                                </div>
+                            </form>
+                            <form class="remove-form" action="{{url_for('hello.removerTarefa', tarefa_id=tarefa.id)}}" method="POST">
+                                <button type="submit">Remover</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
